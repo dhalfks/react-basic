@@ -6,6 +6,7 @@ import HelloProps from './components/HelloProps';
 import HelloProps2 from './components/HelloProps2';
 import StartProps from './components/StartProps';
 import Counter from './components/Counter';
+import InputSample from './components/InputSample';
 
 function App() {
   return (
@@ -32,6 +33,18 @@ function App() {
 
       <hr />
       <Counter />
+
+      <hr />
+      <InputSample />
+
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       
     </div>
   );
