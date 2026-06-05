@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import UserList1 from "./UserList1";
 import CreateUser from "./CreateUser";
 
@@ -87,9 +87,27 @@ function UserList2(){
     // user 값을 클릭하면 active == true / false로 토글
     // 클릭한 유저의 active를 자신의 값과 반대로 설정
     const onToggle = (id)=>{
-
+        // 현재 클릭한 id의 active 값을 자신의 값과 반대로 설정
+        setUsers(
+            users.map(user=> user.id === id ? {...user, active: !user.active}: user)
+        )
     }
 
+    // 활성 사용자 수 : active: true 인 사용자 수 출력
+    const countActiveUser = ()=>{
+        return users.filter(user => user.active).length;
+    }
+
+    // const count = countActiveUser();
+    
+    // 활성 사용자수를 세는 건, users의 값이 변화가 있을 때만 세어야 하는데...
+    // 계속 input 값이 바뀌거나, 컴포넌트가 재 렌더링 되거나.. 불필요하게 호출되어서
+    // 자원이 낭비 됨.
+    // useMemo 첫번째 파라미터로 함수를 넣어주고(어떻게 연산할지 정의하는 함수),
+    // 두번째 파라미터는 deps 배열을 넣어주면 되는데...
+    // 이 배열에 넣은 내용이 바뀌면, 등록한 함수를 호출해서 값은 연산해주고,
+    // 만약 해당 배열의 내용이 바뀌지 않았다면 이전에 연산한 값을 재사용하게 됩니다.
+    const count = useMemo(()=> countActiveUser(), [users]);
 
 
     return(
@@ -107,6 +125,8 @@ function UserList2(){
 
             {/* UserList 컴포넌트 => UserList1 users={users} */}
             <UserList1 users={users} onRemove={onRemove} onToggle={onToggle} />
+
+            <div> 활성 사용자 수 : {count}명 </div>
 
         </div>
     )
