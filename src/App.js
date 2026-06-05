@@ -8,6 +8,7 @@ import StartProps from './components/StartProps';
 import Counter from './components/Counter';
 import InputSample from './components/InputSample';
 import InputSample2 from './components/InputSample2';
+import UserList from './components/user/UserList';
 
 function App() {
   return (
@@ -40,6 +41,9 @@ function App() {
 
       <hr />
       <InputSample2 />
+
+      <hr />
+      <UserList />
 
 
       <br />
