@@ -1,0 +1,20 @@
+import User from "./User";
+
+function UserList1({users}){
+    // props 객체로 묶어서 옴. (값이 하나든, 여러개든...)
+    // props.users  => 제일 잘 안씀
+    // const {users} = props;  => 가끔 사용
+    // 받을 때 이미 풀어서 받기 => 가장 많이 사용
+
+    return(
+        <div>
+            {
+                users.map(user => (
+                    <User user={user} key={user.id}  />
+                ))
+            }
+        </div>
+    )
+}
+
+export default UserList1;
