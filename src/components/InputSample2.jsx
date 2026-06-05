@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 function InputSample2(){
 
@@ -25,6 +25,19 @@ function InputSample2(){
         // 이전에 미리 생성해놓은 값들을 복사
     }
 
+    // useRef() : 특정 DOM을 선택해야 하는 상황에 getElementBy** / querySelector
+    const idInput = useRef();
+
+
+    const onClick=()=>{
+        setInputs({
+            id:'',
+            nick:''
+        });
+        // id 위치로 focus를 이동해주기.
+        idInput.current.focus();
+    }
+
     return(
         <div>
             <input 
@@ -33,6 +46,7 @@ function InputSample2(){
                 value={id} 
                 placeholder="ID..." 
                 onChange={onChange}
+                ref={idInput}
             />
             <input 
                 type="text" 
@@ -41,7 +55,7 @@ function InputSample2(){
                 placeholder="NICK..." 
                 onChange={onChange}
             />
-            <button >초기화</button>
+            <button onClick={onClick}>초기화</button>
             <div>ID(nick) : {id}({nick}) </div>
         </div>
     )
