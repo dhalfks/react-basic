@@ -1,6 +1,6 @@
 import User from "./User";
 
-function UserList1({users}){
+function UserList1({users, onRemove, onToggle}){
     // props 객체로 묶어서 옴. (값이 하나든, 여러개든...)
     // props.users  => 제일 잘 안씀
     // const {users} = props;  => 가끔 사용
@@ -10,7 +10,12 @@ function UserList1({users}){
         <div>
             {
                 users.map(user => (
-                    <User user={user} key={user.id}  />
+                    <User 
+                        user={user} 
+                        key={user.id} 
+                        onRemove={onRemove} 
+                        onToggle={onToggle} 
+                    />
                 ))
             }
         </div>

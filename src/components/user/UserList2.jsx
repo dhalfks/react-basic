@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import UserList1 from "./UserList1";
+import CreateUser from "./CreateUser";
 
 // users 객체에 [{},{},{}] (등록, 삭제, 리스트보기) 하기위한 컴포넌트
 function UserList2(){
@@ -30,12 +31,82 @@ function UserList2(){
     // useRef() : useRef()로 관리하는 변수는 값이 바뀐다고 해서 컴포넌트가 재렌더링 되지 않음.
     const nextId = useRef(4);
 
+    //CreateUser 값을 관리할 useState() 생성
+    const [inputs, setInputs] = useState({
+        username:'',
+        email:''
+    });
+
+    // 구조분해
+    const {username, email} = inputs;
+
+    // onChange() 설정
+    const onChange = (e)=>{
+        const {name, value} = e.target; // name=>key / value=>value
+        setInputs({
+            ...inputs,  // 기존 inputs 복사
+            [name] : value
+        })
+    }
+
+    // onCreate() 설정 => 추가버튼
+    // users에 추가할 객체를 생성 => users 배열에 추가
+    const onCreate = ()=>{
+        // 이미 onChange 에서 input에서 값을 변경해놓음.
+        const user = {
+            id: nextId.current,  // 현재 객체의 값
+            username: username,  // key:value의 이름이 같으면 생략가능. username: username => username
+            email: email,
+            active: false
+        }
+
+        // react에서는 push /pop은 안씀. => 원본 데이터가 변경되는 값은 쓰지 않음.
+        // setUsers([...users, user]); // 원래 users의 값 복사, user
+        setUsers([...users].concat(user));  // 성능 개선이 됨. (내부적으로 더 효율적)
+
+        // nextId 값을 1 증가
+        nextId.current += 1;
+
+        // 추가 후 inputs 객체를 초기화
+        setInputs({
+            username:'',
+            email:''
+        });
+    }
+
+    // onRemove() 설정 => 삭제
+    const onRemove = (id)=>{
+        console.log(id);
+        // id : 파라미터의 값으로 가져온 값 (User => user.id)
+        // 삭제 : user.id  != users.id 일치하지 않는 데이터만 추출
+        // filter : 조건에 맞는 값만 추출하여 배열로 리턴
+        setUsers(users.filter(user => user.id !== id));
+    }
+
+    // onToggle() 설정
+    // user 값을 클릭하면 active == true / false로 토글
+    // 클릭한 유저의 active를 자신의 값과 반대로 설정
+    const onToggle = (id)=>{
+
+    }
+
+
+
     return(
         <div>
-            {/* 등록 컴포넌트 => CreateUser */}
+            {/* 등록 컴포넌트 => CreateUser 
+                => 해당 컴포넌트의 input 객체가 여기 있다고 생각하고 작업.
+                => 만들어진 변수값을 props 전달
+            */}
+            <CreateUser 
+                username={username} 
+                email={email} 
+                onChange={onChange} 
+                onCreate={onCreate}
+            />   
 
             {/* UserList 컴포넌트 => UserList1 users={users} */}
-            <UserList1 users={users} />
+            <UserList1 users={users} onRemove={onRemove} onToggle={onToggle} />
 
         </div>
     )
